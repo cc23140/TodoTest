@@ -2,7 +2,7 @@ import 'package:bloc/bloc.dart';
 import 'package:meta/meta.dart';
 import 'package:todo/firestore/firestore_service.dart';
 
-import '../../data_models/todo_model.dart';
+import '../../../data_models/todo_model.dart';
 
 part 'todo_event.dart';
 part 'todo_state.dart';
@@ -54,9 +54,6 @@ class TodoBloc extends Bloc<TodoEvent, TodoState> {
       }catch(e){
         emit(TodoError('Houve falha ao deletar o Todo!'));
       }
-    });
-    on<TodoEvent>((event, emit) {
-      // TODO: implement event handler
     });
   }
 }

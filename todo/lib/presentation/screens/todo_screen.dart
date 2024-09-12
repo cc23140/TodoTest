@@ -42,11 +42,53 @@ class _HomeViewState extends State<HomeView> {
                       final updatedTodo = todo.copyWith(isCompleted: value);
                       _todoBloc.add(UpdateTodo(updatedTodo));
                 }),
+                trailing: IconButton(onPressed: (){_todoBloc.add(DeleteTodo(todo.id));}, icon: const Icon(Icons.delete)),
               );
             },
           );
+        }else if(state is TodoOperationSuccess){
+          _todoBloc.add(LoadTodos());
+          return Container();
+
+        }else if(state is TodoError){
+          return Center(child: Text(state.errorMessage));
+        }else{
+          return Container();
         }
       }),
+      floatingActionButton: FloatingActionButton(
+          onPressed: (){
+            _showAddTodoDialog(context);
+          },
+          child: const Icon(Icons.add),
+      ),
     );
+  }
+
+  void _showAddTodoDialog(BuildContext context){
+    final _titleController = TextEditingController();
+
+    showDialog(context: context, builder: (context){
+      return AlertDialog(
+        title: const Text('Add Todo'),
+        content: TextField(controller: _titleController,
+          decoration: const InputDecoration(hintText: 'Todo title'),
+        ),
+        actions: [
+          ElevatedButton(onPressed: (){Navigator.pop(context);}, child: const Text('Cancel')),
+          ElevatedButton(onPressed: (){
+            final todo = Todo(
+              id: DateTime.now().toString(),
+              title: _titleController.text,
+              isCompleted: false
+            );
+
+            BlocProvider.of<TodoBloc>(context).add(AddTodo(todo));
+            Navigator.pop(context);
+          }, child: const Text('Add'))
+        ],
+
+      );
+    });
   }
 }

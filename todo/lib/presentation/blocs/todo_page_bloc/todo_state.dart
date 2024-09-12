@@ -21,7 +21,7 @@ class TodoOperationSuccess extends TodoState {
 
 class TodoError extends TodoState {
   final String msg;
-
+  final String errorMessage = 'Deu ruim meu fi';
   TodoError(this.msg);
 }
 
